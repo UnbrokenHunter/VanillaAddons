@@ -1,27 +1,20 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using VanillaAddons.TerminalChanges;
 
 namespace VanillaAddons
 {
-    [BepInPlugin(modGUID, modName, modVersion)]
+    [BepInPlugin(PluginInfo.MOD_GUID, PluginInfo.MOD_Name, PluginInfo.MOD_Version)]
+    [BepInDependency("atomic.terminalapi", "1.5.0")]
     public class VanillaAddonsBase : BaseUnityPlugin
     {
-        private const string modGUID = "hunter.VanillaAddons";
-        private const string modName = "Vanilla Addons";
-        private const string modVersion = "1.0.0.0";
+        private readonly Harmony harmony = new Harmony(PluginInfo.MOD_GUID);
 
-        private readonly Harmony harmony = new Harmony(modGUID);
-
-        private static VanillaAddonsBase Instance;
-
+        public static VanillaAddonsBase Instance;
+         
         internal ManualLogSource mls;
-
 
 
         void Awake()
@@ -31,11 +24,14 @@ namespace VanillaAddons
                 Instance = this;
             }
         
-            mls = BepInEx.Logging.Logger.CreateLogSource(modGUID);
+            mls = BepInEx.Logging.Logger.CreateLogSource(PluginInfo.MOD_GUID);
 
             mls.LogInfo("VanillaAddons has been created successfully");
 
-            harmony.PatchAll(typeof(VanillaAddonsBase));
+            Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+
+            new TerminalCommands();
         }
     }
 }
+ 
