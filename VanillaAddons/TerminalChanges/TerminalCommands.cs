@@ -14,8 +14,42 @@ namespace VanillaAddons.TerminalChanges
         public TerminalCommands() 
         {
             Home();
+            Ship();
             Time();
             Clear();
+        }
+
+        void Ship()
+        {
+            AddCommand("ship", new CommandInfo
+            {
+                Category = "other",
+                Description = "Displays the amount of scrap on the ship.",
+                DisplayTextSupplier = GetShipLootCount
+            },
+            clearPreviousText: false);
+
+
+            string GetShipLootCount()
+            {
+                int lootCount = 0;
+                int lootValue = 0;
+
+                // Find all grabbable objects in the game
+                GrabbableObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GrabbableObject>();
+
+                // Filter out the objects that are considered loot and are located on the ship
+                foreach (var obj in allObjects)
+                {
+                    if (obj.itemProperties.isScrap && obj.isInShipRoom && obj.isInElevator)
+                    {
+                        lootCount++;
+                        lootValue += obj.scrapValue;
+                    }
+                }
+
+                return $"There are {lootCount} items on the shop, worth a total of '{lootValue}.\n";
+            }
         }
 
         void Home()
