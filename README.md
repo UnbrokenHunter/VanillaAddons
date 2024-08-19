@@ -36,11 +36,11 @@ VanillaAddons is a mod for the game _Lethal Company_ that was made to maintain t
    - **Description**: Runs a custom Neofetch command, displaying system information like OS, uptime, package count, and a set of color blocks.
    - **Usage**: `neofetch`
 
-3. **clear/cls**
+3. **clear**
 
    - **Category**: Other
    - **Description**: Clears the terminal screen.
-   - **Usage**: `clear` or `cls`
+   - **Usage**: `clear`
 
 4. **time**
    - **Category**: Other
