@@ -10,11 +10,11 @@ namespace VanillaAddons.TerminalChanges.Patches
     {
 
         internal static bool nanoIsOpen;
-        internal static Files.File nanoFile;
+        internal static FileCommands.File nanoFile;
 
-        internal static List<Files.File> files;
+        internal static List<FileCommands.File> files;
 
-        internal static void Init(List<Files.File> file)
+        internal static void Init(List<FileCommands.File> file)
         {
             nanoIsOpen = false;
             files = file;
@@ -212,7 +212,7 @@ namespace VanillaAddons.TerminalChanges.Patches
             }
 
             // Otherwise create the file
-            files.Add(new Files.File(filename));
+            files.Add(new FileCommands.File(filename));
 
             TerminalNode fileCreated = ScriptableObject.CreateInstance<TerminalNode>();
             fileCreated.displayText = $"File Created: {filename} has been created and added to the desktop.\n";

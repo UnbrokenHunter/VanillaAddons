@@ -7,7 +7,7 @@ using static TerminalApi.TerminalApi;
 
 namespace VanillaAddons.TerminalChanges
 {
-    public class Files
+    public class FileCommands
     {
         // TODO Make Sync Across Multiplayer
         public List<File> files = new List<File>();
@@ -29,7 +29,7 @@ namespace VanillaAddons.TerminalChanges
         }
 
         // TODO Add files catagory in help
-        public Files() 
+        public FileCommands() 
         {
             FilenamesPatch.Init(files);
 

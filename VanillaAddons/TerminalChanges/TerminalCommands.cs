@@ -21,7 +21,8 @@ namespace VanillaAddons.TerminalChanges
             Time();
             Clear();
             
-            new Files();
+            new FileCommands();
+            new ShipCommands();
         }
 
         void Ship()
