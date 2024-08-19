@@ -35,6 +35,7 @@ namespace VanillaAddons.TerminalChanges
             DefaultFiles();
 
             List();
+            WhoAmI();
         }
 
         private void DefaultFiles()
@@ -46,7 +47,7 @@ namespace VanillaAddons.TerminalChanges
             passwords.isReadOnly = true;
             files.Add(passwords);
 
-            File shipMaintenance = new File("maintenance.log");
+            File shipMaintenance = new File("shipmaintenance.log");
             shipMaintenance.content =
                 "Log Date: Aug 25, 1968\n" +
                 "Minor damage to rear thruster. Will fix tmmr.\n" +
@@ -177,5 +178,20 @@ namespace VanillaAddons.TerminalChanges
             }
         }
 
+        void WhoAmI()
+        {
+            AddCommand("whoami", new CommandInfo
+            {
+                Category = "files",
+                Description = "Prints the username of the user.",
+                DisplayTextSupplier = OnWhoAmICommand
+            },
+            clearPreviousText: true);
+
+            string OnWhoAmICommand()
+            {
+                return $"Siguard7\n\n";
+            }
+        }
     }
 }
