@@ -28,6 +28,7 @@ namespace VanillaAddons.TerminalChanges
             }
         }
 
+        // TODO Add files catagory in help
         public Files() 
         {
             FilenamesPatch.Init(files);
@@ -154,6 +155,7 @@ namespace VanillaAddons.TerminalChanges
         }
 
         // Display Files
+        // TODO Change to not use API
         void List()
         {
             AddCommand("ls", new CommandInfo
