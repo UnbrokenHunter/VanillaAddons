@@ -75,7 +75,8 @@ namespace VanillaAddons.TerminalChanges.Patches
             if (array[0].Equals("touch") ||
                 array[0].Equals("cat") ||
                 array[0].Equals("rm") ||
-                array[0].Equals("nano"))
+                array[0].Equals("nano") ||
+                array[0].Equals("gpg"))
             {
                 // Ensure there is a filename
                 if (array.Length == 1)
@@ -105,19 +106,102 @@ namespace VanillaAddons.TerminalChanges.Patches
                         {
                             return OpenNano(array[1], self);
                         }
+                    case "gpg":
+                        {
+                            return Encrypt(array);
+                        }
                 }
             }
 
             return orig(self);
         }
 
+        // Create File
+        private static TerminalNode Encrypt(string[] args)
+        {
+            if (args.Length <= 3)
+            {
+                return CreateNode($"Invalid Argument: {args[1]} Valid arguments are -c, --passphrase.\n");
+            }
+
+            // Check if it's encryption or decryption
+            bool isEncrypting = args[1] == "-c";
+            bool isDecrypting = args[1] == "--passphrase";
+
+            if (!isEncrypting && !isDecrypting)
+            {
+                return CreateNode($"Invalid Argument: {args[1]} Valid arguments are -c, --passphrase.\n");
+            }
+
+            // Validate passphrase argument
+            if (isEncrypting && args[2] != "--passphrase")
+            {
+                return CreateNode($"Invalid Argument: {args[2]} Valid argument is --passphrase.\n");
+            }
+
+            // Validate argument length
+            if (args.Length < (isEncrypting ? 5 : 4))
+            {
+                return CreateNode("Missing Argument: Please provide the correct passphrase and filename.\n");
+            }
+
+            if (args.Length > (isEncrypting ? 5 : 4))
+            {
+                return CreateNode($"Unknown argument: {args[isEncrypting ? 5 : 4]} is unknown.\n");
+            }
+
+            if (files == null || !files.Any())
+            {
+                return CreateNode("No files available to encrypt or decrypt.\n");
+            }
+
+            var fileName = args[isEncrypting ? 4 : 3];
+            var file = files.FirstOrDefault(f => f.name == fileName);
+
+            if (file == null)
+            {
+                return FileNotFound(fileName);
+            }
+
+            if (isEncrypting)
+            {
+                file.encrypted = true;
+                file.password = args[3];
+                return CreateNode($"File Encrypted: {fileName} is now encrypted with the password {args[3]}.\n");
+            }
+            else if (isDecrypting)
+            {
+                if (!file.encrypted)
+                {
+                    return CreateNode($"Decryption Error: {fileName} is not encrypted.\n");
+                }
+
+                if (args[2] == file.password)
+                {
+                    file.encrypted = false;
+                    return CreateNode($"File Decrypted: {fileName} is now decrypted.\n");
+                }
+                else
+                {
+                    return CreateNode($"Incorrect Password: {args[2]} is incorrect.\n");
+                }
+            }
+
+            return CreateNode("Unknown error occurred.\n");
+
+            // Internal method for creating TerminalNode
+            TerminalNode CreateNode(string message)
+            {
+                var node = ScriptableObject.CreateInstance<TerminalNode>();
+                node.displayText = message;
+                node.clearPreviousText = true;
+                return node;
+            }
+        }
 
         // Create File
         private static TerminalNode Touch(string filename)
         {
-            if (IsEncrypted(filename))
-                return FileEncrypted(filename);
-
             // Check if the file already exists
             if (files.Any(file => file.name == filename))
             {
@@ -130,7 +214,10 @@ namespace VanillaAddons.TerminalChanges.Patches
             // Otherwise create the file
             files.Add(new Files.File(filename));
 
-            return FileNotFound(filename);
+            TerminalNode fileCreated = ScriptableObject.CreateInstance<TerminalNode>();
+            fileCreated.displayText = $"File Created: {filename} has been created and added to the desktop.\n";
+            fileCreated.clearPreviousText = true;
+            return fileCreated;
         }
 
         // Print File
@@ -145,7 +232,6 @@ namespace VanillaAddons.TerminalChanges.Patches
                 TerminalNode printFileContents = ScriptableObject.CreateInstance<TerminalNode>();
                 printFileContents.displayText = $"{files.FirstOrDefault(file => file.name == filename).content}\n";
                 printFileContents.clearPreviousText = true;
-                printFileContents.maxCharactersToType = 100;
                 return printFileContents;
             }
 
@@ -156,9 +242,6 @@ namespace VanillaAddons.TerminalChanges.Patches
         // Delete File
         private static TerminalNode Remove(string filename)
         {
-            if (IsEncrypted(filename))
-                return FileEncrypted(filename);
-
             // Check if the file exists
             if (files.Any(file => file.name == filename))
             {
@@ -176,6 +259,8 @@ namespace VanillaAddons.TerminalChanges.Patches
         // When opening a file in nano, this will ensure that the current contents are also displayed
         private static void Terminal_LoadNewNode(On.Terminal.orig_LoadNewNode orig, Terminal self, TerminalNode node)
         {
+            node.maxCharactersToType = 1000;
+
             orig(self, node);
 
             // Nano Is Open
@@ -185,11 +270,11 @@ namespace VanillaAddons.TerminalChanges.Patches
 
         private static TerminalNode OpenNano(string filename, Terminal self)
         {
-            if (IsReadOnly(filename))
-                return FileReadOnly(filename);
-
             if (IsEncrypted(filename))
                 return FileEncrypted(filename);
+
+            if (IsReadOnly(filename))
+                return FileReadOnly(filename);
 
             if (!filename.EndsWith(".txt"))
             {
@@ -208,7 +293,6 @@ namespace VanillaAddons.TerminalChanges.Patches
                 TerminalNode printFileContents = ScriptableObject.CreateInstance<TerminalNode>();
                 printFileContents.displayText = "  <color=#FFFFFF>GNU  Nano  4.3            file</color>\n";
                 printFileContents.clearPreviousText = true;
-                printFileContents.maxCharactersToType = 1000;
                 printFileContents.isConfirmationNode = true;
                 return printFileContents;
             }

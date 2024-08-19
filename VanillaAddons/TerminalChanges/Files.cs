@@ -20,6 +20,8 @@ namespace VanillaAddons.TerminalChanges
             public bool isReadOnly = false;
             public bool encrypted = false;
 
+            public string password;
+
             public File(string name)
             {
                 this.name = name;
@@ -38,7 +40,9 @@ namespace VanillaAddons.TerminalChanges
         private void DefaultFiles()
         {
             File passwords = new File("passwords.txt");
+            passwords.content = "<color=#000000>hes watching you</color>";
             passwords.encrypted = true;
+            passwords.password = "password";
             passwords.isReadOnly = true;
             files.Add(passwords);
 
@@ -106,7 +110,7 @@ namespace VanillaAddons.TerminalChanges
             errorLogs.isReadOnly = true;
             files.Add(errorLogs);
 
-            File directive = new File("comp_directive_7.txt");
+            File directive = new File("company_directive_7.txt");
             directive.content =
                 "Company Directive 7\n" +
                 "Issued: Sep 10, 1968\n" +
