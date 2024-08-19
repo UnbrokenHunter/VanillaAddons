@@ -42,7 +42,7 @@ namespace VanillaAddons.TerminalChanges
             passwords.isReadOnly = true;
             files.Add(passwords);
 
-            File shipMaintenance = new File("shipmaintenancelog.txt");
+            File shipMaintenance = new File("maintenance.log");
             shipMaintenance.content =
                 "Log Date: Aug 25, 1968\n" +
                 "Minor damage to rear thruster. Will fix tmmr.\n" +
@@ -71,7 +71,7 @@ namespace VanillaAddons.TerminalChanges
             shipMaintenance.isReadOnly = true;
             files.Add(shipMaintenance);
 
-            File welcome = new File("Welcome.txt");
+            File welcome = new File("welcome.txt");
             welcome.content =
                 "         <color=#76FFEF>:: WELCOME ::</color>\r\n" +
                 "\r\n" +
@@ -106,7 +106,7 @@ namespace VanillaAddons.TerminalChanges
             errorLogs.isReadOnly = true;
             files.Add(errorLogs);
 
-            File directive = new File("company_directive_7.txt");
+            File directive = new File("comp_directive_7.txt");
             directive.content =
                 "Company Directive 7\n" +
                 "Issued: Sep 10, 1968\n" +
@@ -158,7 +158,7 @@ namespace VanillaAddons.TerminalChanges
                 DisplayTextSupplier = OnListCommand
             },
             clearPreviousText: true);
-
+            
             string OnListCommand()
             {
                 if (files.Count == 0)
@@ -169,7 +169,7 @@ namespace VanillaAddons.TerminalChanges
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("Files:");
                 files.ForEach(file => sb.AppendLine(file.name));
-                return $"{sb.ToString().Trim()}\n";
+                return $"{sb.ToString().Trim()}\n\n";
             }
         }
 

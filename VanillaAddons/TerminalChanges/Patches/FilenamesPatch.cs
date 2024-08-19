@@ -145,12 +145,14 @@ namespace VanillaAddons.TerminalChanges.Patches
                 TerminalNode printFileContents = ScriptableObject.CreateInstance<TerminalNode>();
                 printFileContents.displayText = $"{files.FirstOrDefault(file => file.name == filename).content}\n";
                 printFileContents.clearPreviousText = true;
+                printFileContents.maxCharactersToType = 100;
                 return printFileContents;
             }
 
             return FileNotFound(filename);
         }
 
+        // TODO ADD rm -rf / as an easter egg
         // Delete File
         private static TerminalNode Remove(string filename)
         {
