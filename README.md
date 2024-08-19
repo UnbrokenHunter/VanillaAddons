@@ -124,7 +124,7 @@ VanillaAddons is a mod for the game _Lethal Company_ that was made to maintain t
 
 ## Compatibility
 
-- **Requires**: TerminalAPI v1.5.0
+- **Requires**: TerminalAPI v1.5.0, HookGenPatcher v0.0.5
 - **Incompatible**: May not be compatible with LethalBang, BetterTerminal, MoreTerminalCommands, and Neofetch, due to very similar features.
 
 ## Notes
