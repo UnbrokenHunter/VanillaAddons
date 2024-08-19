@@ -199,6 +199,7 @@ namespace VanillaAddons.TerminalChanges.Patches
             }
         }
 
+        // TODO Add .bat files/shell files
         // Create File
         private static TerminalNode Touch(string filename)
         {
