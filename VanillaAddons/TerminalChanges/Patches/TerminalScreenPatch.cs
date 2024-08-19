@@ -1,29 +1,36 @@
-﻿using HarmonyLib;
-
+﻿
 namespace VanillaAddons.TerminalChanges.Patches
 {
-	[HarmonyPatch(typeof(Terminal))]
     internal class TerminalScreenPatch
     {
-        [HarmonyPatch("BeginUsingTerminal")]
-        [HarmonyPrefix]
-        public static void OpenTerminal(Terminal __instance)
+
+        internal static void Init()
+        {
+            On.Terminal.BeginUsingTerminal += Terminal_BeginUsingTerminal;
+            On.Terminal.QuitTerminal += Terminal_QuitTerminal;
+        }
+
+        public static void Terminal_BeginUsingTerminal(On.Terminal.orig_BeginUsingTerminal orig,
+            Terminal self)
         {
             TerminalNode neofetch = new TerminalNode
             {
-                displayText = Neofetch.GetNeofetch(),
+                displayText = NeofetchText.GetNeofetch(),
                 clearPreviousText = true
             };
-            __instance.terminalNodes.specialNodes[13] = neofetch;
+            self.terminalNodes.specialNodes[13] = neofetch;
 
-            __instance.terminalUIScreen.gameObject.SetActive(true);
+            self.terminalUIScreen.gameObject.SetActive(true);
+
+            orig(self);
         }
 
-        [HarmonyPatch("QuitTerminal")]
-        [HarmonyPrefix]
-        public static void CloseTerminal(Terminal __instance)
+        public static void Terminal_QuitTerminal(On.Terminal.orig_QuitTerminal orig,
+            Terminal self, bool syncTerminalInUse = true)
         {
-            __instance.terminalUIScreen.gameObject.SetActive(false);
+            self.terminalUIScreen.gameObject.SetActive(false);
+
+            orig(self, syncTerminalInUse);
         }
     }
 }

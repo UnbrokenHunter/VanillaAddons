@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TerminalApi;
 using TerminalApi.Classes;
 using VanillaAddons.TerminalChanges;
+using VanillaAddons.TerminalChanges.Patches;
 using static TerminalApi.TerminalApi;
 
 namespace VanillaAddons.TerminalChanges
@@ -13,10 +14,14 @@ namespace VanillaAddons.TerminalChanges
     {
         public TerminalCommands() 
         {
-            Home();
+            TerminalScreenPatch.Init();
+
+            Neofetch();
             Ship();
             Time();
             Clear();
+            
+            new Files();
         }
 
         void Ship()
@@ -48,23 +53,23 @@ namespace VanillaAddons.TerminalChanges
                     }
                 }
 
-                return $"There are {lootCount} items on the shop, worth a total of '{lootValue}.\n";
+                return $"There are {lootCount} items on the ship, worth a total of '{lootValue}.\n";
             }
         }
 
-        void Home()
+        void Neofetch()
         {
-            AddCommand("home", new CommandInfo
+            AddCommand("neofetch", new CommandInfo
             {
                 Category = "other",
                 Description = "Runs Neofetch",
-                DisplayTextSupplier = OnHomeCommand
+                DisplayTextSupplier = OnNeofetchCommand
             },
             clearPreviousText: true);
 
-            string OnHomeCommand()
+            string OnNeofetchCommand()
             {
-                return Neofetch.GetNeofetch();
+                return NeofetchText.GetNeofetch();
             }
         }
 
