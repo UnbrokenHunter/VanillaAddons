@@ -1,5 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using VanillaAddons.InsanityChanges;
 using VanillaAddons.TerminalChanges;
 
 namespace VanillaAddons
@@ -24,6 +27,8 @@ namespace VanillaAddons
             mls.LogInfo("VanillaAddons has been created successfully");
 
             new TerminalCommands();
+            new Insanity();
+
         }
     }
 }

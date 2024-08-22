@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -40,6 +42,7 @@
     <Reference Include="BepInEx">
       <HintPath>..\..\..\..\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Vanilla\BepInEx\core\BepInEx.dll</HintPath>
     </Reference>
+    <Reference Include="DissonanceVoip, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="MMHOOK_Assembly-CSharp">
       <HintPath>D:\SteamLibrary\steamapps\common\Lethal Company Mod Test\BepInEx\plugins\MMHOOK\MMHOOK_Assembly-CSharp.dll</HintPath>
     </Reference>
@@ -59,12 +62,30 @@
     <Reference Include="UnityEngine">
       <HintPath>D:\SteamLibrary\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\SteamLibrary\steamapps\common\Lethal Company Mod Test\Lethal Company_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>D:\SteamLibrary\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InsanityChanges\Hallucinations\BlindHallucination.cs" />
+    <Compile Include="InsanityChanges\Hallucination.cs" />
+    <Compile Include="InsanityChanges\HallucinationManager.cs" />
+    <Compile Include="InsanityChanges\Hallucinations\BunkerHallucination.cs" />
+    <Compile Include="InsanityChanges\Hallucinations\SFXHallucination.cs" />
+    <Compile Include="InsanityChanges\Hallucinations\StingerHallucination.cs" />
+    <Compile Include="InsanityChanges\Hallucinations\DroneHallucination.cs" />
+    <Compile Include="InsanityChanges\Hallucinations\BreathingHallucination.cs" />
+    <Compile Include="InsanityChanges\Hallucinations\MonsterHallucination.cs" />
+    <Compile Include="InsanityChanges\Insanity.cs" />
+    <Compile Include="InsanityChanges\Hallucinations\MutedHallucination.cs" />
+    <Compile Include="InsanityChanges\Hallucinations\LightsHallucination.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PluginInfo.cs" />
@@ -74,9 +95,8 @@
     <Compile Include="TerminalChanges\Patches\TerminalScreenPatch.cs" />
     <Compile Include="TerminalChanges\ShipCommands.cs" />
     <Compile Include="TerminalChanges\TerminalCommands.cs" />
+    <Compile Include="Utility\CoroutineRunner.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Patches\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
