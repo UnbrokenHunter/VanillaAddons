@@ -21,6 +21,7 @@ namespace VanillaAddons.InsanityChanges
             new MutedHallucination(),
             new BlindHallucination(),
             new MonsterHallucination(),
+            new SFXHallucination(),
             new BreathingHallucination(),
             new DroneHallucination(),
             new StingerHallucination(),
